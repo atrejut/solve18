@@ -17,15 +17,18 @@ module settings
 	integer :: ShiftCoupling = -50
 	double precision :: StepProbe = 0.25d0
 	double precision :: StepCoupling = 0.25d0
+	character(len=2) :: pol
 
   contains
     subroutine loadSettings()
       NAMELIST/PARAMS/ bfield, Wc1, Wc2, Wp, hfs, G5p, Gr1, Gr2, gp, gc
       NAMELIST/STEPPING/ NProbe, NCoupling, ShiftProbe, ShiftCoupling, StepProbe, StepCoupling
+      NAMELIST/SIM/ pol
             
       OPEN(UNIT=1, FILE='config.info')
       READ(1, NML=PARAMS)      
       READ(1, NML=STEPPING)
+      READ(1, NML=SIM)
       
       CLOSE(1)
 

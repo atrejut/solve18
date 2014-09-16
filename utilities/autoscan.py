@@ -5,6 +5,7 @@ import time
 fields = np.linspace(-15, 15, 31)
 
 dirname = '../bin/'
+pol = 'pp'
 
 start = time.time()
 
@@ -13,9 +14,11 @@ for f in fields:
       for line in source:
         if line.startswith('bfield'):
           dest.write('bfield = %14.12fd0\n' %f)
+        elif line.startswith('pol'):
+          dest.write('pol = "' + pol + '"')
         else:
           dest.write(line)
-    subprocess.call(r'../bin/solve18_mm', cwd='./'+dirname)
+    subprocess.call(r'../bin/solve18_' + pol, cwd='./'+dirname)
     
 stop = time.time()
 

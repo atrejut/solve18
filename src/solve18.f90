@@ -7,6 +7,7 @@ program test_18level
 	double complex :: y0(neq), zwork(15*neq)
 	integer :: istate, iwork(30), n, m, dummy2(33), dummy4(8), ticr, tocr, clockrate
 	integer :: percentDone = 0
+	integer :: stateSelector(4)
 	double complex, dimension(:, :), allocatable :: results
 	common /ZVOD01/ dummy1, dummy2
 	common /ZVOD02/ dummy3, dummy4
@@ -15,6 +16,14 @@ program test_18level
 !$OMP THREADPRIVATE(/ZVOD01/, /ZVOD02/)
 	
 	call loadSettings()
+	
+	if (pol .eq. 'pp' .or. pol .eq. 'pm') then
+		stateSelector = (/7, 26, 45, 64/)
+	else if (pol .eq. 'mm' .or. pol .eq. 'mp') then
+		stateSelector = (/24, 43, 62, 81/)
+	else
+		write(*, *) 'INVALID STATE', pol
+	endif
 	
 	write (*, *) 'running with B=', bfield
 	
@@ -44,7 +53,7 @@ program test_18level
 		xend = 3.5d0
 		istate = 1
 		call zvode(obedot, neq, y0, x0, xend, 1, 1.d-8, 1.d-8, 1, istate, 1, zwork, 15*neq, rwork, 20+neq, iwork, 30, obedot, 10, delta, 0)
-		results(m, n) = 1.d0/dsqrt(2.d0)*(y0(26) + y0(45)) + 1.d0/dsqrt(3.d0)*(y0(7) + y0(64))
+		results(m, n) = 1.d0/dsqrt(2.d0)*(y0(stateSelector(2)) + y0(stateSelector(3))) + 1.d0/dsqrt(3.d0)*(y0(stateSelector(1)) + y0(stateSelector(4)))
 		! for plus-minus I should look at y(7), y(26), y(45), y(64)
 		! with coefficients 1/root3, 1/root2, 1/root2, 1/root3
 	end do

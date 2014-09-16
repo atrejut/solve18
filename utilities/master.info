@@ -1,0 +1,25 @@
+! you can add comments to this file (e.g. explaining each parameter) by prepending the line with an exclamation mark
+
+&PARAMS
+bfield = 5.d0,
+Wc1 = 2.d0,
+Wc2 = 2.d0,
+Wp = 0.1d0,
+hfs = 8.d0,
+G5p = 6.d0,
+Gr1 = 0.05d0,
+Gr2 = 0.05d0,
+gp = 0.01d0,
+gc = 0.8d0
+/
+&STEPPING
+NProbe = 161,
+NCoupling = 401,
+ShiftProbe = -40,
+ShiftCoupling = -100,
+StepProbe=0.5d0,
+StepCoupling=0.5d0
+/
+&SIM
+pol = "pp"
+/
