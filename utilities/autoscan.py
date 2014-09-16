@@ -15,7 +15,7 @@ for f in fields:
         if line.startswith('bfield'):
           dest.write('bfield = %14.12fd0\n' %f)
         elif line.startswith('pol'):
-          dest.write('pol = "' + pol + '"')
+          dest.write('pol = "' + pol + '"\n')
         else:
           dest.write(line)
     subprocess.call(r'../bin/solve18_' + pol, cwd='./'+dirname)

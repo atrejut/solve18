@@ -26,12 +26,13 @@ program test_18level
 	endif
 	
 	write (*, *) 'running with B=', bfield
+	write (*, *) 'running for polarisation ', pol
 	
 	allocate(results(NCoupling, NProbe))
 	
 	call system_clock(ticr)
 	call CPU_TIME(tic)
-!$OMP PARALLEL DO DEFAULT(PRIVATE) SHARED(results, Nprobe, Ncoupling, ShiftProbe, ShiftCoupling, StepProbe, StepCoupling, percentDone)
+!$OMP PARALLEL DO DEFAULT(PRIVATE) SHARED(results, Nprobe, Ncoupling, ShiftProbe, ShiftCoupling, StepProbe, StepCoupling, percentDone, stateSelector)
 	do n = 1, NProbe
 	delta(1) = ShiftProbe + StepProbe*(n - 1)
 	!write (*, *) 'running calcualation for dp = ', delta(1)
@@ -54,7 +55,6 @@ program test_18level
 		istate = 1
 		call zvode(obedot, neq, y0, x0, xend, 1, 1.d-8, 1.d-8, 1, istate, 1, zwork, 15*neq, rwork, 20+neq, iwork, 30, obedot, 10, delta, 0)
 		results(m, n) = 1.d0/dsqrt(2.d0)*(y0(stateSelector(2)) + y0(stateSelector(3))) + 1.d0/dsqrt(3.d0)*(y0(stateSelector(1)) + y0(stateSelector(4)))
-		! for plus-minus I should look at y(7), y(26), y(45), y(64)
 		! with coefficients 1/root3, 1/root2, 1/root2, 1/root3
 	end do
 !$OMP ATOMIC
@@ -69,7 +69,7 @@ program test_18level
 	write(*, *) 'execution took ', (tocr-ticr)/clockrate/60, 'real-time minutes'
 	
 	write(filedescriptor, "(F6.2)") bfield
-	open(15, file='../results/B'//filedescriptor//'.txt')
+	open(15, file='../results/'//pol//'/B'//filedescriptor//'.txt')
 	do n = 1, NCoupling
 		write(15, *) AIMAG(results(n, :))
 	end do

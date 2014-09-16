@@ -13,10 +13,10 @@ gp = 0.01d0,
 gc = 0.8d0
 /
 &STEPPING
-NProbe = 161,
-NCoupling = 401,
-ShiftProbe = -40,
-ShiftCoupling = -100,
+NProbe = 81,
+NCoupling = 201,
+ShiftProbe = -20,
+ShiftCoupling = -50,
 StepProbe=0.5d0,
 StepCoupling=0.5d0
 /
