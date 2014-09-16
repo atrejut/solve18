@@ -9,11 +9,11 @@ program test_18level
 	integer :: percentDone = 0
 	integer :: stateSelector(4)
 	double complex, dimension(:, :), allocatable :: results
-	common /ZVOD01/ dummy1, dummy2
-	common /ZVOD02/ dummy3, dummy4
+!	common /ZVOD01/ dummy1, dummy2
+!	common /ZVOD02/ dummy3, dummy4
 	external :: obedot
 	Character(len=6) :: filedescriptor
-!$OMP THREADPRIVATE(/ZVOD01/, /ZVOD02/)
+!!$OMP THREADPRIVATE(/ZVOD01/, /ZVOD02/)
 	
 	call loadSettings()
 	
@@ -65,8 +65,8 @@ program test_18level
 	call CPU_TIME(toc)
 	call system_clock(tocr, clockrate)
 	!Solver Statistics
-	write(*, *) 'execution took ', INT((toc-tic)/60), 'minutes of CPU time'
-	write(*, *) 'execution took ', (tocr-ticr)/clockrate/60, 'real-time minutes'
+	write(*, *) 'execution took ', INT((toc-tic)), 'minutes of CPU time'
+	write(*, *) 'execution took ', (tocr-ticr)/clockrate, 'real-time minutes'
 	
 	write(filedescriptor, "(F6.2)") bfield
 	open(15, file='../results/'//pol//'/B'//filedescriptor//'.txt')
