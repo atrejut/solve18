@@ -70,6 +70,25 @@ program test_18level
 	
 	write(filedescriptor, "(F6.2)") bfield
 	open(15, file='../results/'//pol//'/B'//filedescriptor//'.txt')
+	
+	write(15, *) 'bfield: ', bfield
+	write(15, *) 'Wc1: ', Wc1
+	write(15, *) 'Wc2: ', Wc2
+	write(15, *) 'Wp: ', Wp
+	write(15, *) 'hfs: ', hfs
+	write(15, *) 'G5p: ', G5p
+	write(15, *) 'Gr1: ', Gr1
+	write(15, *) 'Gr2: ', Gr2
+	write(15, *) 'gp: ', gp
+	write(15, *) 'gc: ', gc
+	write(15, *) 'NProbe: ', NProbe
+	write(15, *) 'NCoupling: ', NCoupling
+	write(15, *) 'ShiftProbe: ', ShiftProbe
+	write(15, *) 'ShiftCoupling: ', ShiftProbe
+	write(15, *) 'StepProbe: ', StepProbe
+	write(15, *) 'StepCoupling: ', StepCoupling
+	write(15, *) 'pol: ', pol
+
 	do n = 1, NCoupling
 		write(15, *) AIMAG(results(n, :))
 	end do
