@@ -1,12 +1,5 @@
-pm: EXECUTABLE:=../bin/solve18_pm
-mp: EXECUTABLE:=../bin/solve18_mp
-mm: EXECUTABLE:=../bin/solve18_mm
-pp: EXECUTABLE:=../bin/solve18_pp
-
-pm: DERIVATIVE:=derivative_pm.f90
-mp: DERIVATIVE:=derivative_mp.f90
-mm: DERIVATIVE:=derivative_mm.f90
-pp: DERIVATIVE:=derivative_pp.f90
+EXECUTABLE:=../bin/solve18_$(MAKECMDGOALS)
+DERIVATIVE:=derivative_$(MAKECMDGOALS).f90
 
 FC = gfortran-4.8
 
@@ -20,16 +13,21 @@ LOOPFLAGS = -funroll-loops -floop-block
 # then compile with flags below
 # PROFILEFLAGS -fprofile-use -fprofile-correction
 
-.PHONY: all clean distclean
+.PHONY: all clean distclean pm mp mm pp
 
-all: pm mp mm pp 
-pm: compile
-mp: compile
-mm: compile
-pp: compile
+all:
+	$(MAKE) mp
+	$(MAKE) pm
+	$(MAKE) mm
+	$(MAKE) pp
+
+pm: $(EXECUTABLE)
+mp: $(EXECUTABLE)
+mm: $(EXECUTABLE)
+pp: $(EXECUTABLE)
 
 
-compile : solve18.f90 zvode.f settings.f90 $(DERIVATIVE) $(EXECUTABLE)
+$(EXECUTABLE) : solve18.f90 zvode.f settings.f90 $(DERIVATIVE)
 	gfortran-4.8 $(FCFLAGS) $(EXTRAFLAGS) $(LOOPFLAGS) zvode.f settings.f90 $(DERIVATIVE) solve18.f90 -o $(EXECUTABLE)
 
 clean:
