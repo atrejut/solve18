@@ -1,13 +1,13 @@
 EXECUTABLE:=../bin/solve18_$(MAKECMDGOALS)
 DERIVATIVE:=derivative_$(MAKECMDGOALS).f90
 
-FC = gfortran-4.8
+FC = gfortran
 
 BUILD_DIR := ./../build/
 
 FCFLAGS = -Ofast -march=native -fopenmp -ffree-line-length-none -flto
 EXTRAFLAGS = -fmodulo-sched -fmodulo-sched-allow-regmoves -funsafe-loop-optimizations
-LOOPFLAGS = -funroll-loops -floop-block
+LOOPFLAGS = -funroll-loops
 # profiling can give a small speed gain
 # first compile with -fprofile-generate, run once (possibly single-threaded)
 # then compile with flags below
@@ -28,7 +28,7 @@ pp: $(EXECUTABLE)
 
 
 $(EXECUTABLE) : solve18.f90 zvode.f settings.f90 $(DERIVATIVE)
-	gfortran-4.8 $(FCFLAGS) $(EXTRAFLAGS) $(LOOPFLAGS) zvode.f settings.f90 $(DERIVATIVE) solve18.f90 -o $(EXECUTABLE)
+	$(FC) $(FCFLAGS) $(EXTRAFLAGS) $(LOOPFLAGS) zvode.f settings.f90 $(DERIVATIVE) solve18.f90 -o $(EXECUTABLE)
 
 clean:
 	@- $(RM) $(EXECUTABLE)
