@@ -16,6 +16,7 @@ LOOPFLAGS = -funroll-loops
 .PHONY: all clean distclean pm mp mm pp
 
 all:
+	module "load fortran"
 	$(MAKE) mp
 	$(MAKE) pm
 	$(MAKE) mm
@@ -28,7 +29,8 @@ pp: $(EXECUTABLE)
 
 
 $(EXECUTABLE) : solve18.f90 zvode.f settings.f90 $(DERIVATIVE)
-	$(FC) $(FCFLAGS) $(EXTRAFLAGS) $(LOOPFLAGS) zvode.f settings.f90 $(DERIVATIVE) solve18.f90 -o $(EXECUTABLE)
+#	$(FC) $(FCFLAGS) $(EXTRAFLAGS) $(LOOPFLAGS) zvode.f settings.f90 $(DERIVATIVE) solve18.f90 -o $(EXECUTABLE)
+	ifort -fast -i8 -openmp zvode.f settings.f90 $(DERIVATIVE) solve18.f90 -o $(EXECUTABLE)
 
 clean:
 	@- $(RM) $(EXECUTABLE)
