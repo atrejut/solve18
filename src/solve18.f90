@@ -84,7 +84,7 @@ program test_18level
 	write(15, *) 'NProbe: ', NProbe
 	write(15, *) 'NCoupling: ', NCoupling
 	write(15, *) 'ShiftProbe: ', ShiftProbe
-	write(15, *) 'ShiftCoupling: ', ShiftProbe
+	write(15, *) 'ShiftCoupling: ', ShiftCoupling
 	write(15, *) 'StepProbe: ', StepProbe
 	write(15, *) 'StepCoupling: ', StepCoupling
 	write(15, *) 'pol: ', pol
