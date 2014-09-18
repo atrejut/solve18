@@ -65,11 +65,11 @@ program test_18level
 	call CPU_TIME(toc)
 	call system_clock(tocr, clockrate)
 	!Solver Statistics
-	write(*, *) 'execution took ', INT((toc-tic)), 'minutes of CPU time'
-	write(*, *) 'execution took ', (tocr-ticr)/clockrate, 'real-time minutes'
+	write(*, *) 'execution took ', INT((toc-tic)), 'seconds of CPU time'
+	write(*, *) 'execution took ', (tocr-ticr)/clockrate, 'real-time seconds'
 	
 	write(filedescriptor, "(F6.2)") bfield
-	open(15, file='../results/'//pol//'/B'//filedescriptor//'.txt')
+	open(15, file='./output.txt')
 	
 	write(15, *) 'bfield: ', bfield
 	write(15, *) 'Wc1: ', Wc1
