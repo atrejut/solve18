@@ -3,17 +3,14 @@ program test_18level
 	use settings
 	implicit none
 	integer,parameter :: neq=324 !Number of equations
-	double precision :: x0, xend, tic,toc, rwork(20+neq), delta(2), dummy1(50), dummy3
+	double precision :: x0, xend, tic,toc, rwork(20+neq), delta(2)
 	double complex :: y0(neq), zwork(15*neq)
-	integer :: istate, iwork(30), n, m, dummy2(33), dummy4(8), ticr, tocr, clockrate
+	integer :: istate, iwork(30), n, m, ticr, tocr, clockrate, t
 	integer :: percentDone = 0
 	integer :: stateSelector(4)
-	double complex, dimension(:, :), allocatable :: results
-!	common /ZVOD01/ dummy1, dummy2
-!	common /ZVOD02/ dummy3, dummy4
+	double complex, dimension(:, :, :), allocatable :: results
 	external :: obedot
 	Character(len=6) :: filedescriptor
-!!$OMP THREADPRIVATE(/ZVOD01/, /ZVOD02/)
 	
 	call loadSettings()
 	
@@ -28,7 +25,8 @@ program test_18level
 	write (*, *) 'running with B=', bfield
 	write (*, *) 'running for polarisation ', pol
 	
-	allocate(results(NCoupling, NProbe))
+	allocate(results(100, NCoupling, NProbe))
+	
 	
 	call system_clock(ticr)
 	call CPU_TIME(tic)
@@ -40,6 +38,7 @@ program test_18level
 		delta(2) = ShiftCoupling + StepCoupling*(m - 1)
 		! initialise work arrays
 		rwork = 0.0d0
+		rwork(5) = 1e-3
 		iwork = 0
 		iwork(6) = 5000 ! increase maximum number of steps allowed
 		
@@ -53,9 +52,12 @@ program test_18level
 		x0 = 0.0d0
 		xend = 3.5d0
 		istate = 1
-		call zvode(obedot, neq, y0, x0, xend, 1, 1.d-8, 1.d-8, 1, istate, 1, zwork, 15*neq, rwork, 20+neq, iwork, 30, obedot, 10, delta, 0)
-		results(m, n) = 1.d0/dsqrt(2.d0)*(y0(stateSelector(2)) + y0(stateSelector(3))) + 1.d0/dsqrt(3.d0)*(y0(stateSelector(1)) + y0(stateSelector(4)))
-		! with coefficients 1/root3, 1/root2, 1/root2, 1/root3
+		do t = 1, 100
+			xend = 3.5d0*REAL(t)/100.d0
+			call zvode(obedot, neq, y0, x0, xend, 1, 1.d-8, 1.d-8, 1, istate, 1, zwork, 15*neq, rwork, 20+neq, iwork, 30, obedot, 10, delta, 0)
+			results(t, m, n) = 1.d0/dsqrt(2.d0)*(y0(stateSelector(2)) + y0(stateSelector(3))) + 1.d0/dsqrt(3.d0)*(y0(stateSelector(1)) + y0(stateSelector(4)))
+			istate = 2
+		end do
 	end do
 !$OMP ATOMIC
 	percentDone = percentDone + 1
@@ -69,7 +71,7 @@ program test_18level
 	write(*, *) 'execution took ', (tocr-ticr)/clockrate, 'real-time minutes'
 	
 	write(filedescriptor, "(F6.2)") bfield
-	open(15, file='../results/'//pol//'/B'//filedescriptor//'.txt')
+	open(15, file='output.txt')
 	
 	write(15, *) 'bfield: ', bfield
 	write(15, *) 'Wc1: ', Wc1
@@ -89,8 +91,10 @@ program test_18level
 	write(15, *) 'StepCoupling: ', StepCoupling
 	write(15, *) 'pol: ', pol
 
-	do n = 1, NCoupling
-		write(15, *) AIMAG(results(n, :))
+	do n = 1, NProbe
+	do m = 1, NCoupling
+		write(15, *) ShiftProbe + StepProbe*(n-1), ShiftCoupling + StepCoupling*(m-1), AIMAG(results(:, m, n))
+	end do
 	end do
 	close(15)
 	
