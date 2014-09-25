@@ -71,8 +71,8 @@ for n in nvals:
          # return results to home drive
         ifile.write('cp output.meta "%s/meta%5.2f"\n' %(outfolder, b))
         ifile.write('cp output.data "%s/data%5.2f"\n' %(outfolder, b))
-      ##  
-      ##  while subprocess.call(['qsub',  'job-' + name], cwd='../tmp/') != 0:
-      ##    print 'qsub timed out, trying again with identical parameters'
+       
+        while subprocess.call(['qsub',  'job-' + name], cwd='../tmp/') != 0:
+          print 'qsub timed out, trying again with identical parameters'
   hfs_sel+=1
 
