@@ -41,7 +41,7 @@ program test_18level
 		! initialise work arrays
 		rwork = 0.0d0
 		iwork = 0
-		iwork(6) = 5000 ! increase maximum number of steps allowed
+		iwork(6) = 50000 ! increase maximum number of steps allowed
 		
 		! initial conditions for OBE
 		y0 = cmplx(0.0d0, 0.0d0)
