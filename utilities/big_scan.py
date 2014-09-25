@@ -27,8 +27,8 @@ hfs_sel =0;
 for n in nvals:
   hfs=hfList[hfs_sel]
   for p in pol:
-    name = '%ss-%s' %(int(n),p)
-    outfolder =  os.environ['HOME'] +"/julian_git/data/" +date +"/."+ timestamp "/." + + name
+    name = '%s_s-%s' %(int(n),p)
+    outfolder =  os.environ['HOME'] +"/julian_git/data/"+str(date) +"/"+str(timestamp)+"/" +name
     if not os.path.exists(outfolder):
       os.makedirs(outfolder)
     print name
