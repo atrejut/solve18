@@ -20,14 +20,15 @@ p_steps=int(pr*2*1/step_size+1)
 c_steps=int(cr*2*1/step_size+1)
 print pr
 print cr
-timestamp = datetime.now().strftime('%Y%m%d/%H%M%S')
+date = datetime.now().strftime('%Y%m%d')
+timestamp=datetime.now().strftime('%H%M%S')
 
 hfs_sel =0;
 for n in nvals:
   hfs=hfList[hfs_sel]
   for p in pol:
-    name = '%s_s-%s' %(int(n),p)
-    outfolder =  os.environ['HOME'] +"/julian/data/" + timestamp + '-' + name
+    name = '%ss-%s' %(int(n),p)
+    outfolder =  os.environ['HOME'] +"/julian_git/data/" +date +"/."+ timestamp "/." + + name
     if not os.path.exists(outfolder):
       os.makedirs(outfolder)
     print name
