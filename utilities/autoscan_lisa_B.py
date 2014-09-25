@@ -4,7 +4,7 @@ import numpy as np
 import subprocess, os
 from datetime import datetime
 
-bvals = np.linspace(-15, 15, 2)
+bvals = np.linspace(-15, 15, 31)
 pol = 'mm'
 name = 'test2_mm'
 
@@ -18,7 +18,7 @@ if not os.path.exists(outfolder):
 for b in bvals:
   # write job script
   with open('../tmp/job-' + name, 'wb') as ifile:
-    ifile.write('#PBS -lwalltime=30:00\n')
+    ifile.write('#PBS -lwalltime=15:00\n')
     ifile.write('#PBS -lnodes=1:cpu3\n')
     ifile.write('cd $TMPDIR\n')
     ifile.write('cp $HOME/atreju/solve18/bin/solve18_%s "$TMPDIR"\n' %pol)
@@ -36,12 +36,12 @@ for b in bvals:
     ifile.write('echo "gc = 0.8d0" >> config.info\n')
     ifile.write('echo "/" >> config.info\n')
     ifile.write('echo "&STEPPING" >> config.info\n')
-    ifile.write('echo "NProbe = 801," >> config.info\n')
-    ifile.write('echo "NCoupling = 1401," >> config.info\n')
+    ifile.write('echo "NProbe = 401," >> config.info\n')
+    ifile.write('echo "NCoupling = 701," >> config.info\n')
     ifile.write('echo "ShiftProbe = -100," >> config.info\n')
     ifile.write('echo "ShiftCoupling = -175," >> config.info\n')
-    ifile.write('echo "StepProbe = 0.25d0," >> config.info\n')
-    ifile.write('echo "StepCoupling = 0.25d0" >> config.info\n')
+    ifile.write('echo "StepProbe = 0.5d0," >> config.info\n')
+    ifile.write('echo "StepCoupling = 0.5d0" >> config.info\n')
     ifile.write('echo "/" >> config.info\n')
     ifile.write('echo "&SIM" >> config.info\n')
     ifile.write('echo "pol = \\\"%s\\\"" >> config.info\n' %pol)
@@ -50,7 +50,8 @@ for b in bvals:
     # run program
     ifile.write('FORT_FMT_RECL=100000 ./solve18_%s\n'%pol)
     # return results to home drive
-    ifile.write('cp output.txt "%s/data%5.2f"\n' %(outfolder, b))
+    ifile.write('cp output.meta "%s/meta%5.2f"\n' %(outfolder, b))
+    ifile.write('cp output.data "%s/data%5.2f"\n' %(outfolder, b))
   
   while subprocess.call(['qsub',  'job-' + name], cwd='../tmp/') != 0:
     print 'qsub timed out, trying again with identical parameters'

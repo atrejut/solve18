@@ -6,7 +6,7 @@ program test_18level
 	double precision :: x0, xend, tic,toc, rwork(20+neq), delta(2), dummy1(50), dummy3
 	double complex :: y0(neq), zwork(15*neq)
 	integer :: istate, iwork(30), n, m, dummy2(33), dummy4(8), ticr, tocr, clockrate
-	integer :: percentDone = 0
+	integer :: percentDone = 0, reclength
 	integer :: stateSelector(4)
 	double complex, dimension(:, :), allocatable :: results
 !	common /ZVOD01/ dummy1, dummy2
@@ -69,7 +69,7 @@ program test_18level
 	write(*, *) 'execution took ', (tocr-ticr)/clockrate, 'real-time seconds'
 	
 	write(filedescriptor, "(F6.2)") bfield
-	open(15, file='./output.txt')
+	open(15, file='./output.meta')
 	
 	write(15, *) 'bfield: ', bfield
 	write(15, *) 'Wc1: ', Wc1
@@ -89,9 +89,15 @@ program test_18level
 	write(15, *) 'StepCoupling: ', StepCoupling
 	write(15, *) 'pol: ', pol
 
-	do n = 1, NCoupling
-		write(15, *) AIMAG(results(n, :))
-	end do
+	close(15)
+!	do n = 1, NCoupling
+!		write(15, *) AIMAG(results(n, :))
+!	end do
+!	close(15)
+	
+	inquire(iolength=reclength) AIMAG(results)	
+	open(15, file='./output.data', status='unknown', form='unformatted', access='direct', recl=reclength)
+	write(15, rec=1) AIMAG(results)
 	close(15)
 	
 	deallocate(results)
