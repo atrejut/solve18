@@ -9,18 +9,20 @@ print nvals
 bvals = np.linspace(-0.8, 0.8, 9)
 pol =['mm','pm','mp','pp']
 hfList = [9.345, 7.769, 6.409, 5.431, 4.701, 4.182 , 3.667,3.356]
-probe_range=100
-coupling_range=175
+velocity=240
+probe_range=0
+coupling_range=15
 step_size=0.25
-pr=probe_range
-cr=coupling_range
+
+pr=probe_range+int(round(velocity/0.78))
+cr=coupling_range+int(round(velocity/0.48))
 p_steps=int(pr*2*1/step_size+1)
 c_steps=int(cr*2*1/step_size+1)
-
+print pr
+print cr
 timestamp = datetime.now().strftime('%Y%m%d/%H%M%S')
 
 hfs_sel =0;
-
 for n in nvals:
   hfs=hfList[hfs_sel]
   for p in pol:
@@ -54,8 +56,8 @@ for n in nvals:
         ifile.write('echo "&STEPPING" >> config.info\n')
         ifile.write('echo "NProbe = %d," >> config.info\n' %p_steps)
         ifile.write('echo "NCoupling = %d," >> config.info\n' %c_steps)
-        ifile.write('echo "ShiftProbe = -%d," >> config.info\n' %probe_range)
-        ifile.write('echo "ShiftCoupling = -%d," >> config.info\n' %coupling_range)
+        ifile.write('echo "ShiftProbe = -%d," >> config.info\n' %pr)
+        ifile.write('echo "ShiftCoupling = -%d," >> config.info\n' %cr)
         ifile.write('echo "StepProbe = %.2fd0," >> config.info\n' %step_size)
         ifile.write('echo "StepCoupling = %.2fd0" >> config.info\n' %step_size)
         ifile.write('echo "/" >> config.info\n')
@@ -72,3 +74,4 @@ for n in nvals:
       ##  while subprocess.call(['qsub',  'job-' + name], cwd='../tmp/') != 0:
       ##    print 'qsub timed out, trying again with identical parameters'
   hfs_sel+=1
+
