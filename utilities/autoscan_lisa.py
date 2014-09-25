@@ -53,7 +53,8 @@ for wp in wpvals:
       # run program
       ifile.write('FORT_FMT_RECL=100000 ./solve18_%s\n'%pol)
       # return results to home drive
-      ifile.write('cp output.txt "%s/data_wp%5.2f_wc%5.2f"\n' %(outfolder, wp, wc))
+      ifile.write('cp output.meta "%s/meta_wp%5.2f_wc%5.2f"\n' %(outfolder, wp, wc))
+      ifile.write('cp output.data "%s/data_wp%5.2f_wc%5.2f"\n' %(outfolder, wp, wc))
   
     while subprocess.call(['qsub',  'job-' + name], cwd='../tmp/') != 0:
       print 'qsub timed out, trying again with identical parameters'
