@@ -8,8 +8,8 @@ import os
 #folder = '20140919/200748-scanB_pm/'
 folder = '20140924/225518-23s_mm/'
 
-probe_range=100
-coupling_range=175
+probe_range=128
+coupling_range=225
 pr=probe_range
 cr=coupling_range
 step_size=0.25
@@ -39,10 +39,10 @@ for f in sorted(files):
 	offset = np.exp(np.trapz(spline.ev(vvals/780.e-3, 100-vvals/486.e-3)*np.exp(-(vvals/240.)**2), vvals))
 	scanres0[:, index] = scanres[:, index]-offset
 		
-plt.figure()
-plt.imshow(scanres, aspect='auto', interpolation='none', extent=[-15, 15, -50, 40])
-plt.xlabel('B-Field (G)')
-plt.ylabel('Coupling Detuning (MHz)')
+##plt.figure()
+##plt.imshow(scanres, aspect='auto', interpolation='none', extent=[-15, 15, -50, 40])
+##plt.xlabel('B-Field (G)')
+##plt.ylabel('Coupling Detuning (MHz)')
 
 plt.figure()
 for i in range(len(files)):
@@ -52,12 +52,11 @@ for i in range(len(files)):
 plt.xlabel('Coupling Detuning (MHz)')
 plt.ylabel('signal')
 
-plt.figure()
-plt.imshow(scanres0, aspect='auto', interpolation='none', extent=[-15, 15, -50, 40])
-plt.xlabel('B-Field (G)')
-plt.ylabel('Coupling Detuning (MHz)')
-
-plt.show()
+##plt.figure()
+##plt.imshow(scanres0, aspect='auto', interpolation='none', extent=[-15, 15, -50, 40])
+##plt.xlabel('B-Field (G)')
+##plt.ylabel('Coupling Detuning (MHz)')
+##plt.show()
 
 
 
