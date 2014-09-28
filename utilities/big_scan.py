@@ -4,11 +4,12 @@ import numpy as np
 import subprocess, os
 from datetime import datetime
 
-nvals = np.linspace(19,26,8)
+#nvals = np.linspace(19,26,8)
+nvals = [23]
 print nvals
 bvals = np.linspace(-0.8, 0.8, 9)
 pol =['mm','pm','mp','pp']
-hfList = [9.345, 7.769, 6.409, 5.431, 4.701, 4.182 , 3.667,3.356]
+hfList = {19:9.345,20: 7.769,21: 6.409, 22:5.431,23: 4.701,24: 4.182 ,25: 3.667,26:3.356}
 velocity=240
 probe_range=0
 coupling_range=15
@@ -23,11 +24,11 @@ print cr
 date = datetime.now().strftime('%Y%m%d')
 timestamp=datetime.now().strftime('%H%M%S')
 
-hfs_sel =0;
+
 for n in nvals:
-  hfs=hfList[hfs_sel]
+  hfs=hfList[n]
   for p in pol:
-    name = '%s_s-%s' %(int(n),p)
+    name = '%d_s-%s' %(int(n),p)
     outfolder =  os.environ['HOME'] +"/julian_git/data/"+str(date) +"/"+str(timestamp)+"/" +name
     if not os.path.exists(outfolder):
       os.makedirs(outfolder)
@@ -37,10 +38,10 @@ for n in nvals:
       # write job script
      
       with open('../tmp/job-' + name, 'wb') as ifile:
-        ifile.write('#PBS -lwalltime=5:00:00\n')
+        ifile.write('#PBS -lwalltime=10:00:00\n')
         ifile.write('#PBS -lnodes=1:cpu3\n')
         ifile.write('cd $TMPDIR\n')
-        ifile.write('cp $HOME/julian/solve18/bin/solve18_%s "$TMPDIR"\n' %p)
+        ifile.write('cp $HOME/julian_git/solve18/bin/solve18_%s "$TMPDIR"\n' %p)
           # write new config.infoy
         ifile.write('echo "&PARAMS" > config.info\n')
         ifile.write('echo "bfield = %14.12fd0," >> config.info\n' %b)
@@ -71,8 +72,8 @@ for n in nvals:
          # return results to home drive
         ifile.write('cp output.meta "%s/meta%5.2f"\n' %(outfolder, b))
         ifile.write('cp output.data "%s/data%5.2f"\n' %(outfolder, b))
-       
-        while subprocess.call(['qsub',  'job-' + name], cwd='../tmp/') != 0:
-          print 'qsub timed out, trying again with identical parameters'
-  hfs_sel+=1
+      print 'qsub job-' + name
+      while subprocess.call(['qsub',  'job-' + name], cwd='../tmp/') != 0:
+        print 'qsub timed out, trying again with identical parameters'
+  
 
