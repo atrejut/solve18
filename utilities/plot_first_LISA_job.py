@@ -6,7 +6,7 @@ import os
 #folder = '20140919/200820-scanB_mp/'
 #folder = '20140919/201134-scanB_mm/'
 #folder = '20140919/200748-scanB_pm/'
-##root = '/home/junaber/julian/data/20140925/'
+##root = '$HOME/julian/data/20140925/'
 root = 'D:/julian/data/20140925/'
 
 probe_range=128
@@ -18,26 +18,14 @@ p_steps=int(pr*2*1/step_size+1)
 c_steps=int(cr*2*1/step_size+1)
 
 
-##dp = -pr+step_size*np.arange(p_steps)
-##dc = -cr+step_size*np.arange(c_steps)
+dp = -pr+step_size*np.arange(p_steps)
+dc = -cr+step_size*np.arange(c_steps)
 Delta = np.linspace(-15, 15, 500)
 vvals = np.linspace(-100, 100, 5000)
 signal = np.zeros_like(Delta)
 
 folders=[x for x in os.listdir(root)]
 for folder in folders:
-        meta = {}
-        metafiles = [x for x in os.listdir(folder) if x.startswith('meta')]
-        with open(folder + metafiles[0], 'rb') as ifile:
-                for line in ifile:
-                        key, val = line.split()
-                        try:
-                                meta[key[:-1]] = float(val)
-                        except ValueError:
-                                meta[key[:-1]] = val
-
-        dp = meta['ShiftProbe'] + meta['StepProbe']*np.arange(meta['NProbe'])
-        dc = meta['ShiftCoupling']+meta['StepCoupling']*np.arange(meta['NCoupling'])
         n=int(folder[7:9])
         pol=folder[-2:]
         # now here we do it for a whole scan of B-field values
@@ -45,12 +33,11 @@ for folder in folders:
         scanres = np.zeros((len(Delta), len(files)))
         scanres0 = np.zeros((len(Delta), len(files)))
         for f in sorted(files):
-                
 ##
                 print n
                 print pol
-                print root+folder+'/'+f
-                A = np.genfromtxt(root+folder+'/'+f, skiprows=17).T
+                print folder+f
+                A = np.genfromtxt(root+folder +'/'+ f, skiprows=17).T
                 index = int(round((float(f[4:]) + 0.8)*5))
                 print f, index
                 spline = RectBivariateSpline(dp, dc, A)
@@ -74,7 +61,7 @@ for folder in folders:
         plt.xlabel('Coupling Detuning (MHz)')
         plt.ylabel('signal')
         plt.savefig(root+folder+'/'+'plot.png')
-##        plt.show()
+
         ##plt.figure()
         ##plt.imshow(scanres0, aspect='auto', interpolation='none', extent=[-15, 15, -50, 40])
         ##plt.xlabel('B-Field (G)')
