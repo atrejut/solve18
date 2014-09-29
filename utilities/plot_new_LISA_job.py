@@ -6,7 +6,7 @@ import os
 #folder = '20140919/200820-scanB_mp/'
 #folder = '20140919/201134-scanB_mm/'
 #folder = '20140919/200748-scanB_pm/'
-root = '/home/junaber/julian_git/data/20140928/235731'
+root = '/home/junaber/julian_git/data/20140928/235731/'
 ##root = 'D:/julian/data/235731/'
 
 probe_range=128
