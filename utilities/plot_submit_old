@@ -2,6 +2,6 @@
 #PBS -lwalltime=120:00
 echo create results and plot
 cd /home/junaber/julian_git/solve18/utilities/
-python create_results_first_jobs.py
-python plot_results_first_jobs.py
+python create_result_first_jobs.py
+python plot_result_first_jobs.py
 echo end of job
