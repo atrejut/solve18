@@ -1,9 +1,0 @@
-=>> PBS: job killed: walltime 18040 exceeded limit 18000
-forrtl: error (78): process killed (SIGTERM)
-Image              PC                Routine            Line        Source             
-solve18_pm         000000000041D7D0  Unknown               Unknown  Unknown
-solve18_pm         000000000040C2A7  Unknown               Unknown  Unknown
-solve18_pm         0000000000408296  Unknown               Unknown  Unknown
-solve18_pm         0000000000403BAE  Unknown               Unknown  Unknown
-solve18_pm         0000000000401833  Unknown               Unknown  Unknown
-solve18_pm         0000000000503C53  Unknown               Unknown  Unknown
