@@ -6,7 +6,8 @@ import os
 #folder = '20140919/200820-scanB_mp/'
 #folder = '20140919/201134-scanB_mm/'
 #folder = '20140919/200748-scanB_pm/'
-root = '/home/julian/data/20140925/'
+root = '/home/junaber/julian/data/20140925/'
+#root = 'C:/Users/laptop/Documents/GitHub/20140925'
 
 probe_range=128
 coupling_range=225
@@ -29,14 +30,15 @@ for folder in folders:
         pol=folder[-2:]
         # now here we do it for a whole scan of B-field values
         files = [x for x in os.listdir(root+folder) if x.startswith('data')]
-##        scanres = np.zeros((len(Delta), len(files)))
-##        scanres0 = np.zeros((len(Delta), len(files)))
+        scanres = np.zeros((len(Delta), len(files)))
+        scanres0 = np.zeros((len(Delta), len(files)))
         for f in sorted(files):
+                
 ##
                 print n
                 print pol
-##                print folder+f
-                A = np.genfromtxt(root +folder+ f, skiprows=17).T
+                print root+folder+'/'+f
+                A = np.genfromtxt(root+folder+'/'+f, skiprows=17).T
                 index = int(round((float(f[4:]) + 0.8)*5))
                 print f, index
                 spline = RectBivariateSpline(dp, dc, A)
@@ -59,7 +61,7 @@ for folder in folders:
         plt.title('EIT for %ss %s' %(n,pol))
         plt.xlabel('Coupling Detuning (MHz)')
         plt.ylabel('signal')
-        plt.savefig(root+folder+'plot.png')
+        plt.savefig(root+folder+'/'+'plot.png')
         plt.show()
         ##plt.figure()
         ##plt.imshow(scanres0, aspect='auto', interpolation='none', extent=[-15, 15, -50, 40])
