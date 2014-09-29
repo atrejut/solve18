@@ -6,8 +6,8 @@ import os
 #folder = '20140919/200820-scanB_mp/'
 #folder = '20140919/201134-scanB_mm/'
 #folder = '20140919/200748-scanB_pm/'
-root = '/home/junaber/julian_git/data/20140928/235731/'
-##root = 'D:/julian/data/235731/'
+#root = '/home/junaber/julian_git/data/20140928/235731/'
+root = 'D:/julian/data/235731/'
 
 probe_range=128
 coupling_range=225
@@ -21,7 +21,7 @@ c_steps=int(cr*2*1/step_size+1)
 ##dp = -pr+step_size*np.arange(p_steps)
 ##dc = -cr+step_size*np.arange(c_steps)
 Delta = np.linspace(-15, 15, 500)
-vvals = np.linspace(-100, 100, 5000)
+vvals = np.linspace(-1, 1, 5000)
 signal = np.zeros_like(Delta)
 
 folders=[x for x in os.listdir(root)]
@@ -61,21 +61,24 @@ for folder in folders:
                         scanres[i, index] = np.exp(np.trapz(vres, vvals))
                 offset = np.exp(np.trapz(spline.ev(vvals/780.e-3, 100-vvals/486.e-3)*np.exp(-(vvals/240.)**2), vvals))
                 scanres0[:, index] = scanres[:, index]-offset
-                        
+        np.save(root+folder+'/detuning',Delta)
+        np.save(root+folder+'/results',scanres0)
+        np.savetxt(root+folder+'/detuning.csv',Delta,delimiter=",")
+        np.savetxt(root+folder+'/results.csv',scanres0,delimiter=",")                
         ##plt.figure()
         ##plt.imshow(scanres, aspect='auto', interpolation='none', extent=[-15, 15, -50, 40])
         ##plt.xlabel('B-Field (G)')
         ##plt.ylabel('Coupling Detuning (MHz)')
 
-        plt.figure()
-        for i in range(len(files)):
-                b_value=(i+1)/float(len(files))
-                print b_value
-                plt.plot(Delta,-1*scanres0[:,i],'b',alpha=b_value)
-        plt.title('EIT for %ss %s' %(n,pol))
-        plt.xlabel('Coupling Detuning (MHz)')
-        plt.ylabel('signal')
-        plt.savefig(root+folder+'/'+'plot.png')
+##        plt.figure()
+##        for i in range(len(files)):
+##                b_value=(i+1)/float(len(files))
+##                print b_value
+##                plt.plot(Delta,-1*scanres0[:,i],'b',alpha=b_value)
+##        plt.title('EIT for %ss %s' %(n,pol))
+##        plt.xlabel('Coupling Detuning (MHz)')
+##        plt.ylabel('signal')
+##        plt.savefig(root+folder+'/'+'plot.png')
 ##        plt.show()
         ##plt.figure()
         ##plt.imshow(scanres0, aspect='auto', interpolation='none', extent=[-15, 15, -50, 40])
