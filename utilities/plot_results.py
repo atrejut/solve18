@@ -1,3 +1,5 @@
+import matplotlib
+matplotlib.use("Agg")
 import numpy as np
 from matplotlib import pyplot as plt
 from scipy.interpolate import RectBivariateSpline
