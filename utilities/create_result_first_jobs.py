@@ -1,4 +1,6 @@
 import numpy as np
+import matplotlib
+matplotlib.use("Agg")
 from matplotlib import pyplot as plt
 from scipy.interpolate import RectBivariateSpline
 import os
@@ -6,8 +8,8 @@ import os
 #folder = '20140919/200820-scanB_mp/'
 #folder = '20140919/201134-scanB_mm/'
 #folder = '20140919/200748-scanB_pm/'
-##root = '$HOME/julian/data/20140925/'
-root = 'D:/julian/data/20140925/'
+root = '/home/junaber/julian/data/20140925/'
+#root = 'D:/julian/data/20140925/'
 
 probe_range=128
 coupling_range=225

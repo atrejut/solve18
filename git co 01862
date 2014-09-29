@@ -1,0 +1,240 @@
+*   commit 4424f5a (refs/stash)
+|\  Merge: 73284f2 50d71a7
+| | Author: junaber@LISA <j.b.naber@uva.nl>
+| | Date:   Mon Sep 29 12:10:25 2014 +0200
+| | 
+| |     WIP on lisa: 73284f2 add plot for first LISA jobs
+| |   
+| * commit 50d71a7
+|/  Author: junaber@LISA <j.b.naber@uva.nl>
+|   Date:   Mon Sep 29 12:10:25 2014 +0200
+|   
+|       index on lisa: 73284f2 add plot for first LISA jobs
+|  
+* commit 73284f2 (HEAD, origin/lisa, lisa)
+| Author: julianben <julian.naber@yahoo.com>
+| Date:   Mon Sep 29 01:01:55 2014 +0200
+| 
+|     add plot for first LISA jobs
+|  
+* commit 01862ef
+| Author: junaber@LISA <j.b.naber@uva.nl>
+| Date:   Mon Sep 29 00:11:52 2014 +0200
+| 
+|     big_scan.py fix small indentation bug leading to jobs not being submitted correctly
+|  
+* commit 931cd30
+| Author: junaber@LISA <j.b.naber@uva.nl>
+| Date:   Fri Sep 26 00:30:25 2014 +0200
+| 
+|     final version of big_scan.py as submitted
+|  
+* commit 059b194
+| Author: junaber@LISA <j.b.naber@uva.nl>
+| Date:   Fri Sep 26 00:19:53 2014 +0200
+| 
+|     bug fixed
+|  
+* commit 2b61cd5
+| Author: julianben <julian.naber@yahoo.com>
+| Date:   Fri Sep 26 00:07:09 2014 +0200
+| 
+|     new folder structure
+|  
+* commit 5efe8b1
+| Author: julianben <julian.naber@yahoo.com>
+| Date:   Thu Sep 25 20:35:06 2014 +0200
+| 
+|     2D Plots for different magnetic fields
+|  
+* commit 7174816
+| Author: julianben <julian.naber@yahoo.com>
+| Date:   Thu Sep 25 16:38:30 2014 +0200
+| 
+|     Velocity integrated into big_scan.py for easier control of scan range
+|  
+* commit 7b25d2f
+| Author: junaber@LISA <j.b.naber@uva.nl>
+| Date:   Thu Sep 25 16:22:53 2014 +0200
+| 
+|     Big Scan added which includes recent modification of autoscan.py
+|  
+* commit f7b1bbe
+| Author: junaber@LISA <j.b.naber@uva.nl>
+| Date:   Thu Sep 25 16:14:22 2014 +0200
+| 
+|     step size increased
+|  
+* commit d5714b3
+| Author: junaber@LISA <j.b.naber@uva.nl>
+| Date:   Thu Sep 25 15:24:30 2014 +0200
+| 
+|     autoscan_lisa.py: adapt to new binary file saving
+|  
+* commit 61ad635
+| Author: junaber@LISA <j.b.naber@uva.nl>
+| Date:   Thu Sep 25 12:59:26 2014 +0200
+| 
+|     solve18.f90: modified file to save binary output instead of text-files. this hopefully solves the problem with the linebreaks introduced by the intel compiler. also requires saving metadata in a separate file
+|     
+|     autoscan_lisa_B.py: the above change requires some adjustments in the autoscanner, to copy all output files into the destination folder. this is an example of the required adjustments
+|    
+| * commit 6d40246 (origin/julian_lisa)
+|/  Author: julianben <julian.naber@yahoo.com>
+|   Date:   Wed Sep 24 17:59:59 2014 +0200
+|   
+|       23s_mm scanned for small range of B-Fields
+|  
+* commit 35860a3
+| Author: junaber@LISA <j.b.naber@uva.nl>
+| Date:   Mon Sep 22 12:46:51 2014 +0200
+| 
+|     improvements to lisa autoscanner
+|  
+* commit e3562e7
+| Author: Atreju Tauschinsky <Atreju.Tauschinsky@gmx.de>
+| Date:   Fri Sep 19 18:57:01 2014 +0100
+| 
+|     derivative_??.f90: fix a nasty bug to do with Gp/G5p, gp, and fortran
+|     not being case sensitive (urgh!)
+|     prettify.sh: warn about this behaviour in the conversion script
+|  
+* commit 632f59f
+| Author: junaber@LISA <j.b.naber@uva.nl>
+| Date:   Fri Sep 19 10:47:24 2014 +0200
+| 
+|     improvements to lisa autoscanner
+|  
+* commit ba2b753
+| Author: junaber@LISA <j.b.naber@uva.nl>
+| Date:   Thu Sep 18 17:39:05 2014 +0200
+| 
+|     solve18.f90: fix small bug writing wrong parameters to output file
+|  
+* commit c4d911c
+| Author: junaber@LISA <j.b.naber@uva.nl>
+| Date:   Thu Sep 18 17:38:03 2014 +0200
+| 
+|     Makefile: adjust to use intel compiler on Lisa
+|  
+* commit 88c3183
+| Author: junaber@LISA <j.b.naber@uva.nl>
+| Date:   Thu Sep 18 12:13:27 2014 +0200
+| 
+|     autoscan_lisa.py: initial addition of autoscanner for lisa that can make use of multiple nodes by starting jobs in parallel
+|     requires modification of solve18.f90 to fixed output. this still requires some tweaking.
+|    
+| * commit 4ff77fb (origin/timedependence)
+| | Author: Atreju Tauschinsky <Atreju.Tauschinsky@gmx.de>
+| | Date:   Mon Sep 22 15:02:42 2014 +0100
+| | 
+| |     initial commit for evaluating time-dependence
+| |   
+| * commit 0d04b09
+| | Author: Atreju Tauschinsky <Atreju.Tauschinsky@gmx.de>
+| | Date:   Fri Sep 19 18:57:01 2014 +0100
+| | 
+| |     derivative_??.f90: fix a nasty bug to do with Gp/G5p, gp, and fortran
+| |     not being case sensitive (urgh!)
+| |     prettify.sh: warn about this behaviour in the conversion script
+| |     
+| | * commit dde31b2 (origin/master, origin/HEAD, master)
+| |/  Author: Atreju Tauschinsky <Atreju.Tauschinsky@gmx.de>
+|/|   Date:   Fri Sep 19 18:57:01 2014 +0100
+| |   
+| |       derivative_??.f90: fix a nasty bug to do with Gp/G5p, gp, and fortran
+| |       not being case sensitive (urgh!)
+| |       prettify.sh: warn about this behaviour in the conversion script
+| |   
+* | commit e4f5057
+| | Author: junaber@LISA <j.b.naber@uva.nl>
+| | Date:   Thu Sep 18 09:57:25 2014 +0200
+| | 
+| |     Makefile: fix building on LISA with gfortran
+| |     remove one of the loop otimisations that's not available on the lisa gfortran build. This probably has negligible speed impact
+| |     
+* |   commit e022e26
+|\ \  Merge: b825641 052d55b
+| | | Author: Atreju Tauschinsky <Atreju.Tauschinsky@gmx.de>
+| | | Date:   Wed Sep 17 14:36:11 2014 +0200
+| | | 
+| | |     Merge branch 'master' of https://github.com/atrejut/solve18
+| | |     Merges Julians inclusion of Mathematica files
+| | |    
+| * | commit 052d55b
+| |/  Author: julianben <julian.naber@yahoo.com>
+| |   Date:   Wed Sep 17 12:18:09 2014 +0200
+| |   
+| |       Mathematica files added
+| |   
+* | commit b825641
+|/  Author: Atreju Tauschinsky <Atreju.Tauschinsky@gmx.de>
+|   Date:   Wed Sep 17 14:34:53 2014 +0200
+|   
+|       Makefile improvements:
+|       - better build process, cleaner Makefile
+|       - make all now works, and is the default
+|       - make -j n still does *not* work, and I don't see how to fix this easily
+|  
+* commit 1394279
+| Author: Atreju Tauschinsky <Atreju.Tauschinsky@gmx.de>
+| Date:   Tue Sep 16 23:59:12 2014 +0200
+| 
+|     solve18.f90: remove some unnecessary (I hope) OMP commands
+|  
+* commit 9397fbb
+| Author: Atreju Tauschinsky <Atreju.Tauschinsky@gmx.de>
+| Date:   Tue Sep 16 23:58:57 2014 +0200
+| 
+|     plot.py: minor changes
+|  
+* commit 497f827
+| Author: Atreju Tauschinsky <Atreju.Tauschinsky@gmx.de>
+| Date:   Tue Sep 16 23:50:59 2014 +0200
+| 
+|     Makefile improvements
+|     tested out some compiler options. most of these are not really relevant, -flto does make a difference though
+|     also some improvements to how the different targets are built
+|  
+* commit 63db036
+| Author: Atreju Tauschinsky <Atreju.Tauschinsky@gmx.de>
+| Date:   Tue Sep 16 21:03:22 2014 +0200
+| 
+|     add header information to output files
+|  
+* commit 79ac2d3
+| Author: Atreju Tauschinsky <Atreju.Tauschinsky@gmx.de>
+| Date:   Tue Sep 16 20:34:16 2014 +0200
+| 
+|     fix some bugs introduced before
+|  
+* commit c6481b1
+| Author: Atreju Tauschinsky <Atreju.Tauschinsky@gmx.de>
+| Date:   Tue Sep 16 18:56:17 2014 +0200
+| 
+|     select correct matrix element for each polarisation
+|     
+|     this involves an extra line in the config.info file
+|     also adjusted autoscan.py to take it into account
+|  
+* commit ddeb9d0
+| Author: Atreju Tauschinsky <Atreju.Tauschinsky@gmx.de>
+| Date:   Tue Sep 16 16:31:28 2014 +0200
+| 
+|     put all derivative functions in separate files
+|     
+|     this works fine, but the Makefile is a mess, and desparately needs some love
+|     much better than having separate branches for each polarisation
+|     BUG: there's still a problem with selecting the right density matrix elements for each polarisation. need to think about that!
+|  
+* commit 1587ffc
+| Author: Atreju Tauschinsky <Atreju.Tauschinsky@gmx.de>
+| Date:   Tue Sep 16 14:50:09 2014 +0200
+| 
+|     copy from local repository
+|  
+* commit d5c57c5
+  Author: atrejut <atreju.tauschinsky@gmx.de>
+  Date:   Tue Sep 16 14:39:57 2014 +0200
+  
+      Initial commit
