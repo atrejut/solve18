@@ -16,7 +16,6 @@ LOOPFLAGS = -funroll-loops
 .PHONY: all clean distclean pm mp mm pp
 
 all:
-	module "load fortran"
 	$(MAKE) mp
 	$(MAKE) pm
 	$(MAKE) mm

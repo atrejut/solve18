@@ -6,8 +6,8 @@ import os
 #folder = '20140919/200820-scanB_mp/'
 #folder = '20140919/201134-scanB_mm/'
 #folder = '20140919/200748-scanB_pm/'
-##root = '/home/junaber/julian/data/20140925/'
-root = 'D:/julian/data/20140925/'
+root = '/home/junaber/julian_git/data/20140928/235731'
+##root = 'D:/julian/data/235731/'
 
 probe_range=128
 coupling_range=225
@@ -27,8 +27,8 @@ signal = np.zeros_like(Delta)
 folders=[x for x in os.listdir(root)]
 for folder in folders:
         meta = {}
-        metafiles = [x for x in os.listdir(folder) if x.startswith('meta')]
-        with open(folder + metafiles[0], 'rb') as ifile:
+        metafiles = [x for x in os.listdir(root+folder) if x.startswith('meta')]
+        with open(root+folder+'/' + metafiles[0], 'rb') as ifile:
                 for line in ifile:
                         key, val = line.split()
                         try:
@@ -38,20 +38,22 @@ for folder in folders:
 
         dp = meta['ShiftProbe'] + meta['StepProbe']*np.arange(meta['NProbe'])
         dc = meta['ShiftCoupling']+meta['StepCoupling']*np.arange(meta['NCoupling'])
-        n=int(folder[7:9])
+        n=int(folder[0:2])
         pol=folder[-2:]
         # now here we do it for a whole scan of B-field values
         files = [x for x in os.listdir(root+folder) if x.startswith('data')]
         scanres = np.zeros((len(Delta), len(files)))
         scanres0 = np.zeros((len(Delta), len(files)))
-        for f in sorted(files):
+        for i, f in enumerate(sorted(files, key = lambda x : float(x[4:]))):
                 
 ##
                 print n
                 print pol
                 print root+folder+'/'+f
-                A = np.genfromtxt(root+folder+'/'+f, skiprows=17).T
-                index = int(round((float(f[4:]) + 0.8)*5))
+##                A = np.genfromtxt(root+folder+'/'+f, skiprows=17).T
+##                index = int(round((float(f[4:]) + 0.8)*5))
+                A = np.fromfile(root+folder+'/' + f).reshape(meta['NProbe'], meta['NCoupling'])
+                index = i
                 print f, index
                 spline = RectBivariateSpline(dp, dc, A)
                 for i, D in enumerate(Delta):
