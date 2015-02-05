@@ -1,6 +1,6 @@
 
 
-include 'matrix.f90'
+include 'obessmm.f90'
 
 
 subroutine solve(fsup, gp, gc, hfR, muBB, Wp, Wc, dwp, dwc, f5p, Delta, nv, vs, output)
@@ -22,7 +22,8 @@ subroutine solve(fsup, gp, gc, hfR, muBB, Wp, Wc, dwp, dwc, f5p, Delta, nv, vs, 
 
 	integer :: stateSelector(4)
 
-	stateSelector = (/7, 26, 45, 64/)
+!	stateSelector = (/7, 26, 45, 64/) ! for pp and pm polarisation
+	stateSelector = (/24, 43, 62, 81/) ! for mp and mm polarisation
 !	stateSelector = (/109, 128, 147, 166/) ! for transposed matrix, row/column ordering ?
 
 !$OMP PARALLEL DO DEFAULT(FIRSTPRIVATE) SHARED(output)

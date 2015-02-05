@@ -12,30 +12,29 @@ from scipy.interpolate import UnivariateSpline
 
 
 # load data, and select frequency range of interest
-data = np.genfromtxt('./data/20s_Zeeman_same_pol.csv', delimiter=',')
+data = np.genfromtxt('./data/20s_Zeeman_oppos_pol.csv', delimiter=',')
 field = data[0, 1:]
 sel = np.where(field == 0)[0]
 freq = data[1:, 0] - data[1:, 0].mean()
 data = data[1:, 1:]
 
 
-deltac = np.linspace(-20, 20, 41)
+deltac = np.linspace(-20, 20, 61)
 spline = UnivariateSpline(freq, data[:, sel], s=0)
 trace = spline(deltac)
 
 tic = time.time()
 
-vvals = np.linspace(-30, 30, 121) # this is slightly coars, -40, 40, 81 is a safer option
+vvals = np.linspace(-30, 30, 241) # this is slightly coars, -40, 40, 81 is a safer option
 signal = np.zeros_like(deltac)
 
 
-def get_trace(A, off, wp, wc, dwp, dwc):
+def get_trace(A, off, wp, wc, dwp, dwc, mubb):
 	parms = {
 		'fsup' : 1e-2,
 		'gp' :  6.,
 		'gc' : 0.05,
 		'hfr' : 7.8,
-		'mubb' : -0.,
 		'f5p' : 0.1,
 		'nv' : vvals.shape[0],
 		'vs' : vvals
@@ -45,6 +44,7 @@ def get_trace(A, off, wp, wc, dwp, dwc):
 	parms['wc'] = 1.*wc
 	parms['dwp'] = 1.*dwp/100
 	parms['dwc'] = 1.*dwc/10
+	parms['mubb'] = 1.*mubb
 
 	for i, D in enumerate(deltac[::-1] + off):
 		res = solver.solve(delta=D, **parms).imag
@@ -62,12 +62,12 @@ def optimise_cma(): # no additional constraints beyond pulse duration
 	def fitfun(gene):
 		return np.sum((trace - get_trace(*gene))**2)
 
-	initval = [2., 3.9, 4., 2., 1., 2.]
-	sigma0 = 0.5
+	initval = [2., 3.9, 4., 2., 1., 2., 0.]
+	sigma0 = 1.
 	opts = {}
 	opts['maxfevals'] = 300
 	opts['tolfun'] = 1e-3
-	opts['bounds'] = [[0.1, -10, 1e-5, 1e-5, 1e-5, 1e-5], [100, 10, 10, 10, 3, 3]]
+	opts['bounds'] = [[0.1, -10, 1e-5, 1e-5, 1e-5, 1e-5, -5], [100, 10, 10, 10, 10, 10, 5]]
 	#opts['popsize'] = 22 # default is 13 for problem dimensionality 24; larger means more global search
 
 	es = cma.CMAEvolutionStrategy(initval, sigma0, opts)
@@ -91,12 +91,11 @@ def optimise_cma(): # no additional constraints beyond pulse duration
 
 	return es
 
-signal = get_trace(A=2., off=3.9, wp=4., wc=2., dwp = 1., dwc = 2.)
-print 'total analysis time was:', time.time()-tic, 'seconds'
+signal = get_trace(A=1.3, off=4.7, wp=4.2, wc=2.4, dwp = 0.04, dwc = 2.1, mubb = 0.)
+print 'analysis time per trace:', time.time()-tic, 'seconds'
 
 res = optimise_cma()
 
-#raise RuntimeError
 
 plt.figure()
 signal = get_trace(*res.result()[-2])
