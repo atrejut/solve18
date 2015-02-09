@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from numpy import pi
 import time
-import solver
+import solver_pp as solver
 from scipy.interpolate import UnivariateSpline
 
 # things to do:
@@ -14,18 +14,23 @@ from scipy.interpolate import UnivariateSpline
 # load data, and select frequency range of interest
 data = np.genfromtxt('./data/20s_Zeeman_oppos_pol.csv', delimiter=',')
 field = data[0, 1:]
-sel = np.where(field == 0)[0]
+sel = [0, 15, -1] # 15 = np.where(field == 0)[0] for oppos
 freq = data[1:, 0] - data[1:, 0].mean()
 data = data[1:, 1:]
 
 
-deltac = np.linspace(-20, 20, 61)
-spline = UnivariateSpline(freq, data[:, sel], s=0)
-trace = spline(deltac)
+deltac = np.linspace(-40, 40, 121)
+trace = []
+for se in sel:
+	spline = UnivariateSpline(freq, data[:, se], s=0)
+	trace.append(spline(deltac))
+	
+sfield = field[sel]/100
+trace = np.array(trace)
 
 tic = time.time()
 
-vvals = np.linspace(-30, 30, 241) # this is slightly coars, -40, 40, 81 is a safer option
+vvals = np.linspace(-60, 60, 241) # this is slightly coars, -40, 40, 81 is a safer option
 signal = np.zeros_like(deltac)
 
 
@@ -60,14 +65,18 @@ def get_trace(A, off, wp, wc, dwp, dwc, mubb):
 def optimise_cma(): # no additional constraints beyond pulse duration
 	import cma
 	def fitfun(gene):
-		return np.sum((trace - get_trace(*gene))**2)
+		res = 0
+		for i in range(3):
+			model = get_trace(*gene[:-2], mubb=gene[-2]*sfield[i] + gene[-1])
+			res += np.sum((trace[i] - model)**2)
+		return res
 
-	initval = [2., 3.9, 4., 2., 1., 2., 0.]
-	sigma0 = 1.
+	initval = [2., 3.9, 4., 2., 1., 2., 1., 0.]
+	sigma0 = 0.5
 	opts = {}
-	opts['maxfevals'] = 300
+	opts['maxfevals'] = 700
 	opts['tolfun'] = 1e-3
-	opts['bounds'] = [[0.1, -10, 1e-5, 1e-5, 1e-5, 1e-5, -5], [100, 10, 10, 10, 10, 10, 5]]
+	opts['bounds'] = [[0.1, -10, 1e-5, 1e-5, 1e-5, 1e-5, 0.5, -5], [100, 10, 10, 10, 10, 10, 5, 5]]
 	#opts['popsize'] = 22 # default is 13 for problem dimensionality 24; larger means more global search
 
 	es = cma.CMAEvolutionStrategy(initval, sigma0, opts)
@@ -98,7 +107,9 @@ res = optimise_cma()
 
 
 plt.figure()
-signal = get_trace(*res.result()[-2])
+for i in range(3):
+	model = get_trace(*res.best.x[:-2], mubb=res.best.x[-2]*sfield[i] + res.best.x[-1])
+	plt.plot(deltac, model)
 print 'plotting experimental trace with current', field[sel]
 plt.plot(freq, data[:, sel], label='raw data')
 plt.plot(deltac, trace, label='spline interpolation')

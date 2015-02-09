@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 from numpy import pi
 import time
-import solver
+import solver_pp as solver
 from scipy.interpolate import UnivariateSpline
 
 # things to do:
@@ -24,9 +24,7 @@ for filename in ['./data/20s_Zeeman_same_pol.csv', './data/20s_Zeeman_oppos_pol.
 	plt.figure()
 	plt.imshow(data2, aspect='auto')
 
-raise RuntimeError
-
-deltac = np.linspace(-20, 20, 41)
+deltac = np.linspace(-20, 20, 81)
 spline = UnivariateSpline(freq, data[:, 20], s=0)
 trace = spline(deltac)
 
@@ -65,12 +63,15 @@ def get_trace(A, off, wp, wc, dwp, dwc, mubb):
 
 model=[]
 plt.figure()
-for b in np.arange(-15, 15, 1):
+for b in field:
 	print b
-	s = get_trace(A=2.6, off=4.8, wp=3.6, wc=1.5, dwp = 1.6, dwc = 3., mubb=b)
+	s = get_trace(A=0.98, off=3.98, wp=3.86, wc=2.38, dwp = 1.14, dwc = 3.21, mubb=1.1286*b-0.592)
 	plt.plot(s)
 	model.append(s)
 print 'total analysis time was:', time.time()-tic, 'seconds'
+model = np.array(model)
+np.save('model_pp.npy', model)
+
 plt.figure()
 plt.imshow(model)
 plt.show()
